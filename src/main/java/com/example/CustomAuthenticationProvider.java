@@ -12,6 +12,7 @@ public class CustomAuthenticationProvider extends DaoAuthenticationProvider {
 
 	@Override
 	public Authentication authenticate(Authentication authentication) throws AuthenticationException {
+		// process additional request parameters here
 		final String verificationCode = ((CustomWebAuthenticationDetails) authentication.getDetails())
 				.getVerificationCode();
 		System.out.println(verificationCode);
