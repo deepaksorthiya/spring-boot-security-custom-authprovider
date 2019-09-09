@@ -49,6 +49,7 @@ public class WebSecConfig extends WebSecurityConfigurerAdapter {
 		CustomJdbcUserDetailManager userDetailsServiceBean = new CustomJdbcUserDetailManager();
 		userDetailsServiceBean.setDataSource(dataSource);
 		userDetailsServiceBean.setRolePrefix("ROLE_");
+		userDetailsServiceBean.setAuthenticationManager(authenticationManagerBean());
 		return userDetailsServiceBean;
 	}
 
