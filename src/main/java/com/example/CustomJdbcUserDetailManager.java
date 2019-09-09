@@ -11,12 +11,11 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.provisioning.JdbcUserDetailsManager;
 
 public class CustomJdbcUserDetailManager extends JdbcUserDetailsManager {
 	@Override
-	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+	public UserDetails loadUserByUsername(String username) {
 		List<AppUser> users = super.getJdbcTemplate().query(
 				"select username,password,enabled, firstname, lastname from users where username = ?",
 				new String[] { username }, new RowMapper<AppUser>() {
@@ -42,8 +41,11 @@ public class CustomJdbcUserDetailManager extends JdbcUserDetailsManager {
 		// dbAuthsSet.addAll(loadGroupAuthorities(user.getUsername()));
 		List<GrantedAuthority> dbAuths = new ArrayList<>(dbAuthsSet);
 		addCustomAuthorities(user.getUsername(), dbAuths);
-		return new AppUser(user.getUsername(), user.getPassword(), user.isEnabled(), user.isEnabled(), user.isEnabled(),
-				user.isEnabled(), dbAuths);
+		AppUser customAppUser = new AppUser(user.getUsername(), user.getPassword(), user.isEnabled(), user.isEnabled(),
+				user.isEnabled(), user.isEnabled(), dbAuths);
+		customAppUser.setFirstName(user.getFirstName());
+		customAppUser.setLastName(user.getLastName());
+		return customAppUser;
 	}
 
 }

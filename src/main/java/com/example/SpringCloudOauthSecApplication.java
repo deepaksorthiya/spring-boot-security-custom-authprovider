@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -23,7 +23,7 @@ public class SpringCloudOauthSecApplication {
 	}
 
 	@GetMapping("/")
-	public Authentication getAuthentication(Authentication authentication) {
-		return authentication;
+	public AppUser getAuthentication() {
+		return (AppUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 	}
 }
