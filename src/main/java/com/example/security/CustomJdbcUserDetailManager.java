@@ -1,4 +1,4 @@
-package com.example;
+package com.example.security;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -14,6 +14,8 @@ import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.JdbcUserDetailsManager;
+
+import com.example.usermgmt.AppUser;
 
 public class CustomJdbcUserDetailManager extends JdbcUserDetailsManager {
 

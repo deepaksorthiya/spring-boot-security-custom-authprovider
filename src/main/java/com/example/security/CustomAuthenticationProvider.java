@@ -1,4 +1,4 @@
-package com.example;
+package com.example.security;
 
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.core.Authentication;

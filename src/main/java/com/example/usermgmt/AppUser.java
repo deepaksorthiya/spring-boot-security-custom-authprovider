@@ -1,4 +1,4 @@
-package com.example;
+package com.example.usermgmt;
 
 import java.util.Collection;
 

@@ -1,4 +1,4 @@
-package com.example;
+package com.example.usermgmt;
 
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
