@@ -7,13 +7,19 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.JdbcUserDetailsManager;
 
 public class CustomJdbcUserDetailManager extends JdbcUserDetailsManager {
+
+	@Autowired
+	PasswordEncoder passwordEncoder;
+
 	@Override
 	public UserDetails loadUserByUsername(String username) {
 		List<AppUser> users = super.getJdbcTemplate().query(
@@ -37,8 +43,10 @@ public class CustomJdbcUserDetailManager extends JdbcUserDetailsManager {
 
 		AppUser user = users.get(0); // contains no GrantedAuthority[]
 		Set<GrantedAuthority> dbAuthsSet = new HashSet<>();
+
 		dbAuthsSet.addAll(loadUserAuthorities(user.getUsername()));
-		// dbAuthsSet.addAll(loadGroupAuthorities(user.getUsername()));
+		dbAuthsSet.addAll(loadGroupAuthorities(user.getUsername()));
+
 		List<GrantedAuthority> dbAuths = new ArrayList<>(dbAuthsSet);
 		addCustomAuthorities(user.getUsername(), dbAuths);
 		AppUser customAppUser = new AppUser(user.getUsername(), user.getPassword(), user.isEnabled(), user.isEnabled(),
