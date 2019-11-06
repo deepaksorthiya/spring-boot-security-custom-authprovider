@@ -43,8 +43,13 @@ public class WebSecConfig extends WebSecurityConfigurerAdapter {
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-		http.authorizeRequests().anyRequest().authenticated().and().formLogin()
-				.authenticationDetailsSource(customWebAuthenticationDetailsSource);
+		// @formatter:off
+			http
+			.authorizeRequests().anyRequest().authenticated()
+			.and()
+			.formLogin().authenticationDetailsSource(customWebAuthenticationDetailsSource); 
+		// @formatter:on
+
 	}
 
 	// Expose the UserDetailsService as a Bean
