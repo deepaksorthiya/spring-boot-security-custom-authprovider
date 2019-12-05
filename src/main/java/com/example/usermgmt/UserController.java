@@ -25,6 +25,7 @@ public class UserController {
 	public UserProfile getUser() {
 		AppUser appUser = (AppUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		UserProfile userProfile = modelMapper.map(appUser, UserProfile.class);
+		logger.info("User profile", userProfile);
 		return userProfile;
 	}
 
