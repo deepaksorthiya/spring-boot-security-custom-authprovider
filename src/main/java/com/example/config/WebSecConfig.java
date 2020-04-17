@@ -45,9 +45,14 @@ public class WebSecConfig extends WebSecurityConfigurerAdapter {
 	protected void configure(HttpSecurity http) throws Exception {
 		// @formatter:off
 			http
-			.authorizeRequests().anyRequest().authenticated()
+			.formLogin().loginPage("/login").permitAll()
+			.authenticationDetailsSource(customWebAuthenticationDetailsSource)
+			.and().logout().permitAll()
+			.logoutUrl("/logout")
+			//.logoutSuccessUrl("/login")
 			.and()
-			.formLogin().authenticationDetailsSource(customWebAuthenticationDetailsSource); 
+			.authorizeRequests().antMatchers("/js/**", "/css/**","/images/**","/webjars/**","/**/favicon.ico").permitAll()
+			.anyRequest().authenticated();
 		// @formatter:on
 
 	}
