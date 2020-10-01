@@ -12,6 +12,7 @@ import org.springframework.security.config.BeanIds;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -26,7 +27,7 @@ import com.example.security.CustomWebAuthenticationDetailsSource;
  * @author deepakk
  * @date Sep 9, 2019
  */
-@EnableWebSecurity
+@EnableWebSecurity(debug = true)
 @EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true, jsr250Enabled = true)
 public class WebSecConfig extends WebSecurityConfigurerAdapter {
 
@@ -42,17 +43,21 @@ public class WebSecConfig extends WebSecurityConfigurerAdapter {
 	}
 
 	@Override
+	public void configure(WebSecurity web) throws Exception {
+		web.ignoring().antMatchers("/js/**", "/css/**", "/images/**", "/webjars/**", "/**/favicon.ico");
+	}
+
+	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		// @formatter:off
 			http
-			.formLogin().loginPage("/login").permitAll()
+			.formLogin().loginPage("/login").permitAll().defaultSuccessUrl("/home", true)
 			.authenticationDetailsSource(customWebAuthenticationDetailsSource)
 			.and().logout().permitAll()
 			.logoutUrl("/logout")
 			//.logoutSuccessUrl("/login")
 			.and()
-			.authorizeRequests().antMatchers("/js/**", "/css/**","/images/**","/webjars/**","/**/favicon.ico").permitAll()
-			.anyRequest().authenticated();
+			.authorizeRequests().anyRequest().authenticated();
 		// @formatter:on
 
 	}
