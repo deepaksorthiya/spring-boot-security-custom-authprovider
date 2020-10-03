@@ -54,8 +54,7 @@ public class WebSecConfig extends WebSecurityConfigurerAdapter {
 			.formLogin().loginPage("/login").permitAll().defaultSuccessUrl("/home", true)
 			.authenticationDetailsSource(customWebAuthenticationDetailsSource)
 			.and().logout().permitAll()
-			.logoutUrl("/logout")
-			//.logoutSuccessUrl("/login")
+			.logoutUrl("/logout").logoutSuccessUrl("/login")
 			.and()
 			.authorizeRequests().anyRequest().authenticated();
 		// @formatter:on
