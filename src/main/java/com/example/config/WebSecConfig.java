@@ -27,7 +27,7 @@ import com.example.security.CustomWebAuthenticationDetailsSource;
  * @author deepakk
  * @date Sep 9, 2019
  */
-@EnableWebSecurity(debug = true)
+@EnableWebSecurity(debug = false)
 @EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true, jsr250Enabled = true)
 public class WebSecConfig extends WebSecurityConfigurerAdapter {
 
