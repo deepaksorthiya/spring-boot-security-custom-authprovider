@@ -31,25 +31,26 @@ import com.example.security.CustomWebAuthenticationDetailsSource;
 @EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true, jsr250Enabled = true)
 public class WebSecConfig extends WebSecurityConfigurerAdapter {
 
-	@Autowired
-	private DataSource dataSource;
+    @Autowired
+    private DataSource dataSource;
 
-	@Autowired
-	private CustomWebAuthenticationDetailsSource customWebAuthenticationDetailsSource;
+    @Autowired
+    private CustomWebAuthenticationDetailsSource customWebAuthenticationDetailsSource;
 
-	@Override
-	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-		auth.authenticationProvider(daoAuthenticationProvider());
-	}
+    @Override
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+        auth.authenticationProvider(daoAuthenticationProvider());
+    }
 
-	@Override
-	public void configure(WebSecurity web) throws Exception {
-		web.ignoring().antMatchers("/js/**", "/css/**", "/images/**", "/webjars/**", "/**/favicon.ico", "/h2-console/**");
-	}
+    @Override
+    public void configure(WebSecurity web) throws Exception {
+        web.ignoring().antMatchers("/js/**", "/css/**", "/images/**", "/webjars/**", "/**/favicon.ico",
+                "/h2-console/**");
+    }
 
-	@Override
-	protected void configure(HttpSecurity http) throws Exception {
-		// @formatter:off
+    @Override
+    protected void configure(HttpSecurity http) throws Exception {
+        // @formatter:off
 			http
 			.formLogin().loginPage("/login").permitAll().defaultSuccessUrl("/home", true)
 			.authenticationDetailsSource(customWebAuthenticationDetailsSource)
@@ -59,46 +60,46 @@ public class WebSecConfig extends WebSecurityConfigurerAdapter {
 			.authorizeRequests().anyRequest().authenticated();
 		// @formatter:on
 
-	}
+    }
 
-	// Expose the UserDetailsService as a Bean
-	@Bean(BeanIds.USER_DETAILS_SERVICE)
-	@Override
-	public UserDetailsService userDetailsServiceBean() throws Exception {
-		CustomJdbcUserDetailManager userDetailsServiceBean = new CustomJdbcUserDetailManager();
-		userDetailsServiceBean.setDataSource(dataSource);
-		userDetailsServiceBean.setRolePrefix("ROLE_");
-		userDetailsServiceBean.setAuthenticationManager(authenticationManagerBean());
-		return userDetailsServiceBean;
-	}
+    // Expose the UserDetailsService as a Bean
+    @Bean(BeanIds.USER_DETAILS_SERVICE)
+    @Override
+    public UserDetailsService userDetailsServiceBean() throws Exception {
+        CustomJdbcUserDetailManager userDetailsServiceBean = new CustomJdbcUserDetailManager();
+        userDetailsServiceBean.setDataSource(dataSource);
+        userDetailsServiceBean.setRolePrefix("ROLE_");
+        userDetailsServiceBean.setAuthenticationManager(authenticationManagerBean());
+        return userDetailsServiceBean;
+    }
 
-	@Bean(BeanIds.AUTHENTICATION_MANAGER)
-	@Override
-	public AuthenticationManager authenticationManagerBean() throws Exception {
-		return super.authenticationManagerBean();
-	}
+    @Bean(BeanIds.AUTHENTICATION_MANAGER)
+    @Override
+    public AuthenticationManager authenticationManagerBean() throws Exception {
+        return super.authenticationManagerBean();
+    }
 
-	@Bean
-	public PasswordEncoder passwordEncoder() {
-		return new BCryptPasswordEncoder();
-	}
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
 
-	@Bean
-	public DaoAuthenticationProvider daoAuthenticationProvider() throws Exception {
-		final CustomAuthenticationProvider authProvider = new CustomAuthenticationProvider();
-		authProvider.setUserDetailsService(userDetailsServiceBean());
-		authProvider.setPasswordEncoder(passwordEncoder());
-		return authProvider;
-	}
+    @Bean
+    public DaoAuthenticationProvider daoAuthenticationProvider() throws Exception {
+        final CustomAuthenticationProvider authProvider = new CustomAuthenticationProvider();
+        authProvider.setUserDetailsService(userDetailsServiceBean());
+        authProvider.setPasswordEncoder(passwordEncoder());
+        return authProvider;
+    }
 
-	@Bean
-	public JdbcTemplate jdbcTemplate() {
-		return new JdbcTemplate(dataSource);
-	}
+    @Bean
+    public JdbcTemplate jdbcTemplate() {
+        return new JdbcTemplate(dataSource);
+    }
 
-	@Bean
-	public ModelMapper modelMapper() {
-		return new ModelMapper();
-	}
+    @Bean
+    public ModelMapper modelMapper() {
+        return new ModelMapper();
+    }
 
 }
