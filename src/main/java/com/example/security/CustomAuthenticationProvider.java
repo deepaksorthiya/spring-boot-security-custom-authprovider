@@ -14,10 +14,8 @@ import java.util.Objects;
 public class CustomAuthenticationProvider extends DaoAuthenticationProvider {
     private static final Logger LOGGER = LoggerFactory.getLogger(CustomAuthenticationProvider.class);
 
-    private final UserDetailsService userDetailsService;
-
     public CustomAuthenticationProvider(UserDetailsService userDetailsService) {
-        this.userDetailsService = userDetailsService;
+        super(userDetailsService);
     }
 
     @Override
@@ -30,10 +28,5 @@ public class CustomAuthenticationProvider extends DaoAuthenticationProvider {
         }
         LOGGER.info("Verification Code {} ", verificationCode);
         return super.authenticate(authentication);
-    }
-
-    @Override
-    protected void doAfterPropertiesSet() {
-        this.setUserDetailsService(userDetailsService);
     }
 }
